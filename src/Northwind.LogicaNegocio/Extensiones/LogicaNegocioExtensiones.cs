@@ -24,7 +24,9 @@ public static class LogicaNegocioExtensiones
         servicios.AgregarAccesoDatos(cadenaConexion, reintentarAnteFallos, maximoReintentos);
 
         servicios.AddScoped<IValidator<CategoryDTO>, CategoriaValidator>();
+        servicios.AddScoped<IValidator<ProductDTO>, ProductoValidator>();
         servicios.AddScoped<ICategoriaServicio, CategoriaServicio>();
+        servicios.AddScoped<IProductoServicio, ProductoServicio>();
         servicios.AddScoped<IConexionServicio, ConexionServicio>();
 
         return servicios;
