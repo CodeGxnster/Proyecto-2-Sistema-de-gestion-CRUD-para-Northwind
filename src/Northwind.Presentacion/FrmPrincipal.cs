@@ -11,19 +11,18 @@ namespace Northwind.Presentacion;
 public class FrmPrincipal : Form
 {
     private readonly IServiceProvider _proveedor;
+    private readonly List<Button> _botonesMenu = new();
 
     private Panel _panelNavegacion = null!;
     private Panel _panelEncabezado = null!;
     private Panel _panelContenedor = null!;
     private Label _lblTituloSeccion = null!;
-    private Label _lblSubtitulo = null!;
     private Button? _botonActivo;
     private Form? _formularioActivo;
 
     public FrmPrincipal(IServiceProvider proveedor, IOptions<AplicacionSettings> opciones)
     {
         _proveedor = proveedor;
-
         InicializarComponentes(opciones.Value);
     }
 
@@ -31,7 +30,7 @@ public class FrmPrincipal : Form
     {
         Text = $"{ajustes.Nombre} {ajustes.Version}";
         Size = new Size(1220, 740);
-        MinimumSize = new Size(1020, 620);
+        MinimumSize = new Size(1100, 650);
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = TemaVisual.ColorFondo;
         Font = TemaVisual.FuenteNormal;
@@ -50,9 +49,9 @@ public class FrmPrincipal : Form
         Controls.Add(_panelEncabezado);
         Controls.Add(_panelNavegacion);
 
-        if (_panelNavegacion.Controls.OfType<Button>().LastOrDefault() is { } botonInicial)
+        if (_botonesMenu.Count > 0)
         {
-            botonInicial.PerformClick();
+            _botonesMenu[0].PerformClick();
         }
     }
 
@@ -91,20 +90,16 @@ public class FrmPrincipal : Form
 
         _panelNavegacion.Controls.Add(panelLogo);
 
-        var botones = new[]
-        {
-            CrearBotonMenu("Categorias", (_, _) => AbrirFormulario(_proveedor.GetRequiredService<FrmCategorias>(), _botonCategorias))
-        };
+        CrearBotonMenu("Categorias", () => _proveedor.GetRequiredService<FrmCategorias>());
+        CrearBotonMenu("Productos", () => _proveedor.GetRequiredService<FrmProductos>());
 
-        for (var i = botones.Length - 1; i >= 0; i--)
+        for (var i = _botonesMenu.Count - 1; i >= 0; i--)
         {
-            _panelNavegacion.Controls.Add(botones[i]);
+            _panelNavegacion.Controls.Add(_botonesMenu[i]);
         }
     }
 
-    private Button? _botonCategorias;
-
-    private Button CrearBotonMenu(string texto, EventHandler onClick)
+    private Button CrearBotonMenu(string texto, Func<Form> creadorFormulario)
     {
         var boton = new Button
         {
@@ -121,13 +116,9 @@ public class FrmPrincipal : Form
 
         boton.FlatAppearance.BorderSize = 0;
         boton.FlatAppearance.MouseOverBackColor = TemaVisual.ColorTarjetaSecundaria;
-        boton.Click += onClick;
+        boton.Click += (_, _) => AbrirFormulario(creadorFormulario(), boton);
 
-        if (texto == "Categorias")
-        {
-            _botonCategorias = boton;
-        }
-
+        _botonesMenu.Add(boton);
         return boton;
     }
 
@@ -158,7 +149,7 @@ public class FrmPrincipal : Form
             TextAlign = ContentAlignment.MiddleLeft
         };
 
-        _lblSubtitulo = new Label
+        _panelEncabezado.Controls.Add(new Label
         {
             Text = $"Entorno {ajustes.Entorno}",
             Font = TemaVisual.FuentePequena,
@@ -166,13 +157,12 @@ public class FrmPrincipal : Form
             Dock = DockStyle.Top,
             Height = 18,
             TextAlign = ContentAlignment.MiddleLeft
-        };
+        });
 
-        _panelEncabezado.Controls.Add(_lblSubtitulo);
         _panelEncabezado.Controls.Add(_lblTituloSeccion);
     }
 
-    private void AbrirFormulario(Form formularioHijo, Button? boton)
+    private void AbrirFormulario(Form formularioHijo, Button boton)
     {
         if (_formularioActivo != null)
         {
@@ -187,13 +177,10 @@ public class FrmPrincipal : Form
             _botonActivo.Font = TemaVisual.FuenteNormal;
         }
 
-        if (boton != null)
-        {
-            _botonActivo = boton;
-            _botonActivo.BackColor = TemaVisual.ColorBotonPrimario;
-            _botonActivo.ForeColor = Color.White;
-            _botonActivo.Font = TemaVisual.FuenteNormalNegrita;
-        }
+        _botonActivo = boton;
+        _botonActivo.BackColor = TemaVisual.ColorBotonPrimario;
+        _botonActivo.ForeColor = Color.White;
+        _botonActivo.Font = TemaVisual.FuenteNormalNegrita;
 
         _lblTituloSeccion.Text = formularioHijo.Text;
 
