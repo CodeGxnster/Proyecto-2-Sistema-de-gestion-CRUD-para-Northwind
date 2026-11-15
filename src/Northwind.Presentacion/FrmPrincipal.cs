@@ -92,6 +92,7 @@ public class FrmPrincipal : Form
 
         CrearBotonMenu("Categorias", () => _proveedor.GetRequiredService<FrmCategorias>());
         CrearBotonMenu("Productos", () => _proveedor.GetRequiredService<FrmProductos>());
+        CrearBotonMenu("Reportes", () => _proveedor.GetRequiredService<FrmReportes>());
 
         for (var i = _botonesMenu.Count - 1; i >= 0; i--)
         {

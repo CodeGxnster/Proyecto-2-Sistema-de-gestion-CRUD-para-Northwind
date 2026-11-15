@@ -28,6 +28,8 @@ public static class LogicaNegocioExtensiones
         servicios.AddScoped<ICategoriaServicio, CategoriaServicio>();
         servicios.AddScoped<IProductoServicio, ProductoServicio>();
         servicios.AddScoped<IConexionServicio, ConexionServicio>();
+        servicios.AddScoped<IReporteServicio, ReporteServicio>();
+        servicios.AddScoped<IExportadorReportes, ExportadorReportes>();
 
         return servicios;
     }
