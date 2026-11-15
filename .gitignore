@@ -1,0 +1,28 @@
+## Archivos de compilacion
+bin/
+obj/
+out/
+
+## Configuracion local de IDEs
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.idea/
+*.DotSettings.user
+
+## Logs generados dinamicamente
+logs/*.log
+!logs/app-ejemplo.log
+
+## Reportes exportados
+reportes/
+*.csv
+*.xlsx
+
+## Archivos del sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
