@@ -33,6 +33,7 @@ public static class AccesoDatosExtensiones
         servicios.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
         servicios.AddScoped<IProductoRepositorio, ProductoRepositorio>();
         servicios.AddScoped<ISuplidorConsultaRepositorio, SuplidorConsultaRepositorio>();
+        servicios.AddScoped<IReporteRepositorio, ReporteRepositorio>();
 
         return servicios;
     }
