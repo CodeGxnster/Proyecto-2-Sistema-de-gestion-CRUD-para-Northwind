@@ -65,6 +65,7 @@ internal static class Program
             servicios.AddTransient<FrmPrincipal>();
             servicios.AddTransient<FrmCategorias>();
             servicios.AddTransient<FrmProductos>();
+            servicios.AddTransient<FrmReportes>();
 
             using var proveedor = servicios.BuildServiceProvider();
             using (var alcance = proveedor.CreateScope())
