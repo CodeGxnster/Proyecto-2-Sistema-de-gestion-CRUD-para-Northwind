@@ -15,6 +15,10 @@ public class NorthwindDbContext : DbContext
 
     public DbSet<Categoria> Categorias => Set<Categoria>();
 
+    public DbSet<Producto> Productos => Set<Producto>();
+
+    public DbSet<Suplidor> Suplidores => Set<Suplidor>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(NorthwindDbContext).Assembly);
